@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    DTD pour le projet PadChest XML - Version simplifiée
+    Structure pour les images radiographiques thoraciques
+    Basé sur les 16 champs essentiels sélectionnés du CSV
+-->
+
+<!-- Élément racine : conteneur principal pour toutes les images -->
+<!ELEMENT images (image+)>
+<!-- Attributs optionnels pour les métadonnées du document -->
+<!ATTLIST images 
+    version CDATA #IMPLIED    <!-- Version du format XML -->
+    created CDATA #IMPLIED>   <!-- Date de création du fichier -->
+
+<!-- Élément image : représente une image radiographique individuelle -->
+<!ELEMENT image (patient, study, diagnosis, report)>
+<!-- Attributs de l'image -->
+<!ATTLIST image 
+    id CDATA #REQUIRED        <!-- ImageID du CSV - ATTRIBUT OBLIGATOIRE -->
+    imageDir CDATA #IMPLIED>  <!-- ImageDir du CSV - répertoire de l'image -->
+
+<!-- ========== INFORMATIONS PATIENT ========== -->
+<!-- Élément patient : données du patient -->
+<!ELEMENT patient (id, birth)>
+<!-- Attribut pour indiquer si les données sont anonymisées -->
+<!ATTLIST patient 
+    anonymized (true|false) "true">  <!-- Protection de la vie privée -->
+
+<!-- Identifiant unique du patient (PatientID du CSV) -->
+<!ELEMENT id (#PCDATA)>
+<!-- Date de naissance du patient (PatientBirth du CSV) -->
+<!ELEMENT birth (#PCDATA)>
+
+<!-- ========== INFORMATIONS ÉTUDE ========== -->
+<!-- Élément study : informations sur l'étude radiologique -->
+<!ELEMENT study (studyId, projection, pediatric, methodProjection)>
+<!-- Attribut pour l'ID de l'étude -->
+<!ATTLIST study 
+    studyId CDATA #IMPLIED>   <!-- StudyID du CSV -->
+
+<!-- Identifiant de l'étude (StudyID du CSV) -->
+<!ELEMENT studyId (#PCDATA)>
+<!-- Type de projection (Projection du CSV) -->
+<!ELEMENT projection (#PCDATA)>
+<!-- Indicateur pédiatrique (Pediatric du CSV) -->
+<!ELEMENT pediatric (#PCDATA)>
+<!-- Méthode de projection (MethodProjection du CSV) -->
+<!ELEMENT methodProjection (#PCDATA)>
+
+<!-- ========== DIAGNOSTIC ET LABELS ========== -->
+<!-- Élément diagnosis : informations diagnostiques et labels -->
+<!ELEMENT diagnosis (labels, localizations, labelsLocalizationsBySentence, methodLabel, reportId)>
+<!-- Attribut pour le niveau de confiance du diagnostic -->
+<!ATTLIST diagnosis 
+    confidence CDATA #IMPLIED>  <!-- Niveau de confiance du diagnostic -->
+
+<!-- Conteneur pour les labels diagnostiques (Labels du CSV) -->
+<!ELEMENT labels (label*)>
+<!-- Attribut pour compter le nombre de labels -->
+<!ATTLIST labels 
+    count CDATA #IMPLIED>  <!-- Nombre de labels associés -->
+
+<!-- Label diagnostique individuel -->
+<!ELEMENT label (#PCDATA)>
+<!-- Attribut CUI (Concept Unique Identifier) pour le label -->
+<!ATTLIST label 
+    cui CDATA #IMPLIED>  <!-- Identifiant UMLS du concept (LabelCUIS du CSV) -->
+
+<!-- Conteneur pour les localisations anatomiques (Localizations du CSV) -->
+<!ELEMENT localizations (location*)>
+<!-- Attribut pour compter le nombre de localisations -->
+<!ATTLIST localizations 
+    count CDATA #IMPLIED>  <!-- Nombre de localisations associées -->
+
+<!-- Localisation anatomique individuelle -->
+<!ELEMENT location (#PCDATA)>
+<!-- Attribut CUI (Concept Unique Identifier) pour la localisation -->
+<!ATTLIST location 
+    cui CDATA #IMPLIED>  <!-- Identifiant UMLS de la localisation (LocalizationsCUIS du CSV) -->
+
+<!-- Labels et localisations par phrase (LabelsLocalizationsBySentence du CSV) -->
+<!ELEMENT labelsLocalizationsBySentence (#PCDATA)>
+<!-- Attribut pour indiquer le format des données -->
+<!ATTLIST labelsLocalizationsBySentence 
+    format CDATA #IMPLIED>  <!-- Format des données (tableau de tableaux) -->
+
+<!-- Méthode de labellisation (MethodLabel du CSV) -->
+<!ELEMENT methodLabel (#PCDATA)>
+<!-- Identifiant du rapport (ReportID du CSV) -->
+<!ELEMENT reportId (#PCDATA)>
+
+<!-- ========== RAPPORT TEXTUEL ========== -->
+<!-- Élément report : rapport textuel de l'image (Report du CSV) -->
+<!ELEMENT report (#PCDATA)>
+<!-- Attributs du rapport -->
+<!ATTLIST report 
+    language CDATA #IMPLIED  <!-- Langue du rapport -->
+    length CDATA #IMPLIED>   <!-- Longueur du rapport en caractères -->
+
+<!-- 
+    ========== NOTES SUR LA STRUCTURE SIMPLIFIÉE ==========
+    - L'attribut obligatoire 'id' est sur l'élément 'image' (conforme aux exigences)
+    - Seuls les 16 champs essentiels sont conservés selon la sélection
+    - Les champs complexes (Labels, Localizations) sont décomposés en éléments individuels
+    - Les attributs CUI sont préservés pour les labels et localisations
+    - Le DTD est écrit manuellement (conforme aux exigences)
+    - Structure simplifiée : Patient -> Study -> Diagnosis -> Report
+-->
