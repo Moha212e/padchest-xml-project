@@ -1,0 +1,147 @@
+1. Introduction 
+Vous trouverez dans ce document le contexte général du système informatique qui devra être 
+réalisé. On y détaille ensuite les différentes fonctionnalités demandées. Ce document peut 
+donc être considéré comme votre ”contrat de travail”. Il permettra de mieux appréhender 
+l’organisation du travail de l’année et sa planification au travers des différentes semaines. 
+Les modalités d’évaluation se trouvent à la fin de cet énoncé reprenant les explications quant 
+à la construction de la cote finale. Il convient d’en prendre connaissance. Elles vous engagent 
+pour toute la durée de l’année scolaire. 
+Les données des films proviennent de la publication PadChest (https://bimcv.cipf.es/bimcv
+projects/padchest/) 
+2. Contexte 
+Votre agent spécial a réussi à voler une partie des données concernant des images 
+radiographiques thoraciques (en remplissant le formulaire de demande et en téléchargeant 
+via leur site FTP, on les remercie, d’ailleurs), mais pour que ce soit utilisable, il leur faut 
+désormais structurer ces données (ils optent judicieusement pour le format XML) effectuer 
+les transformations nécessaires pour pouvoir les présenter sur leur site web (grâce à XSLT) 
+ainsi que les intégrer dans une base de données pour y rechercher des informations (à l’aide 
+de XQuery). 
+2.1 Les images 
+La signalétique d’une image comporte tout un ensemble de métadonnées associées à cette 
+image. Par exemple, son ID, l’ID du patient, le temps d’exposition, la position du patient, …. 
+Chaque image est une ligne (un enregistrement) stocké dans un fichier texte appelé 
+PADCHEST_chest_x_ray_images_labels_160K_01.02.19.csv. On retrouve 36 champs par film 
+expliqués dans le tableau page suivante 
+Le format d’un enregistrement de la table externe est le suivant :  
+,ImageID,ImageDir,StudyDate_DICOM,StudyID,PatientID,PatientBirth,PatientSex_DIC
+ OM,ViewPosition_DICOM,Projection,MethodProjection,Pediatric,Modality_DICOM,M
+ anufacturer_DICOM,PhotometricInterpretation_DICOM,PixelRepresentation_DICOM,
+ PixelAspectRatio_DICOM,SpatialResolution_DICOM,BitsStored_DICOM,WindowCente
+ r_DICOM,WindowWidth_DICOM,Rows_DICOM,Columns_DICOM,XRayTubeCurrent_D
+ ICOM,Exposure_DICOM,ExposureInuAs_DICOM,ExposureTime,RelativeXRayExposure
+ _DICOM,ReportID,Report,MethodLabel,Labels,Localizations,LabelsLocalizationsBySen
+ tence,labelCUIS,LocalizationsCUIS 
+Le séparateur de champ est la virgule (« , ») et certains champs peuvent avoir plusieurs 
+valeurs. Dans ce cas, chaque valeur est contenue dans un tableau, lui-même entouré de 
+guillemets. Le champ LabelsLocalizationsBySentence est même encore plus spécial car il s’agit 
+d’un tableau de tableaux. 
+Par exemple, pour la deuxième image (id 2), on a l’enregistrement ci-dessous dans le fichier 
+texte : 
+1,135803415504923515076821959678074435083_fzis7d.png,0,20150914,135803415504
+ 923515076821959678074435083,313572750430997347502932654319389875966,1929.0
+ ,M,LATERAL,L,Manual 
+review 
+of 
+DICOM 
+fields,No,CR,ImagingDynamicsCompanyLtd,MONOCHROME2,0,None,None,12,2631,2065,
+ 3296,3236,400,10,10000,25,None,4991845, cambi pulmonar cronic sever . sign fibrosis 
+bibasal . sutil infiltr pseudonodul milimetr vidri deslustr localiz bas . cifosis sever 
+.,Physician,"['pulmonary fibrosis', 'chronic changes', 'kyphosis', 'pseudonodule', 'ground 
+glass pattern']","['loc basal', 'loc basal bilateral']","[['pulmonary fibrosis', 'loc basal 
+bilateral'], ['chronic changes'], ['kyphosis'], ['pseudonodule', 'ground glass pattern', 'loc 
+basal']]",['C0034069' 'C0742362' 'C2115817' 'C3544344'],['C1282378'] 
+2,135803415504923515076821959678074435083 
+Vous devez seulement considérer les champs suivants :  
+3. Réalisations attendues 
+Vous utiliserez le fichier csv comme base pour vos données, et effectuerez les opérations 
+suivantes pour obtenir le site web souhaité. 
+3.1  Conversion vers un document XML 
+En première partie, les données du fichier seront converties en un fichier XML. Vous êtes libres 
+dans le nom des tags, dans la structure utilisée, dans le choix des types d’éléments (avec 
+données ou simple tag), d’attributs etc, mais il faut au minimum utiliser un attribut dans au 
+moins un élément. 
+Le langage de programmation pour cette opération est laissé à votre appréciation parmi les 
+possibilités suivantes : (PL/)SQL, Java, C, C++. 
+Note : Attention aux API blackbox (que vous aurez le temps d’utiliser plus tard) et qui génèrent 
+parfois des erreurs bien difficiles à débugguer. Préférez une approche « gestion de chaine de 
+caractères », qui est certes plus bas niveau mais sur laquelle vous avez le contrôle total et qui, 
+finalement, ira plus vite à développer. 
+3.2  Structure du document XML 
+La structure de votre document devra être déterminée. C’est dans cette partie que vous 
+validerez formellement les choix que vous avez effectués dans la section précédente. 
+Au minimum : Vous réaliserez un document DTD précisant la structure 
+Pour les pros : Vous réaliserez un document XSD précisant la structure 
+Note : Ces structures doivent impérativement être écrites à la main, et pas générées 
+automatiquement à partir d’un outil. 
+3.3  Validation du fichier XML 
+Une fois votre document XML et votre document structure en main, il vous faudra vérifier si 
+celui-ci est bien valide. Pour ce faire, il faudra réaliser un parser. Celui-ci sera écrit en langage 
+java. 
+Au minimum : Vous utiliserez un parser SAX 
+Pour les pros : Vous utiliserez un parser DOM 
+Pour les experts : Vous évaluerez les performances de vos programmes en comparant les 
+temps d’exécution ainsi que la consommation mémoire (y compris, le cas échéant, en 
+comparant aussi une validation avec DTD et une validation avec XSD) 
+Dans tous les cas : En plus de vérifier la validité du fichier, vous effectuerez via le parser les 
+calculs suivants :  - 
+Compter le nombre d’images qui contiennent la localisation ‘loc right’ - 
+Classer les labels qui apparaissent le plus souvent et afficher la liste des 10 labels les 
+plus fréquents et, pour chacun, combien de fois il apparait. 
+3.4 Création du site web avec XSLT 
+Une fois votre fichier XML en votre possession, vous effectuerez une transformation à l’aide 
+d’un fichier style sheet (XSLT, donc) afin de générer une page HTML affichant proprement les 
+informations. 
+Puisque nous travaillons avec des gens pressés qui veulent une solution rapide, vous pouvez 
+utiliser un petit serveur apache (par exemple avec XAMPP) où vous stockerez vos fichiers.  
+Au minimum : Ce sera fonctionnel. Il sera possible de voir toutes les informations (dans une 
+table, par exemple). 
+Pour les pros : On imaginera un document un peu structuré, joli, ergonomique, sans pour 
+autant faire intervenir des technologies supplémentaires. 
+Pour les experts : Vous rajouterez des fonctionnalités à l’aide du CSS, du javascript, etc, etc. 
+Vous pouvez laisser libre cours à votre imagination et vos envies. Etonnez-moi ☺ 
+3.5 Intégration dans une base de données XQuery 
+A l’aide du logiciel BaseX, vous intégrerez votre fichier XML à l’intérieur d’une base de données 
+XQuery. Vous écrirez 2 requêtes : l’une pour compter le nombre d’images qui contiennent la 
+localisation ‘loc right’, l’autre pour classer les labels qui apparaissent le plus souvent et afficher 
+la liste des 10 labels les plus fréquents et, pour chacun, combien de fois il apparait. 
+Au minimum : Ce sera fonctionnel (intégration et requêtes).  
+Pour les pros : La base de données et le résultat des requêtes pourra être obtenu à l’aide d’un 
+navigateur web  (Webservice) 
+Pour les experts : Le webservice pourra être appelé par la page générée dans le XSLT 
+4. Evaluation 
+L’évaluation sera séparée en deux catégories : 
+1) Théorie. Evaluée via un QCM. Compte pour 40% des points 
+2) Laboratoire. Evaluée via deux projets. Compte pour 60% des points 
+Afin d’évaluer la partie laboratoire, deux projets seront à réaliser. 
+1) Ce projet XML, qui compte pour 50% de la note de labo 
+2) Un autre projet, plutôt orienté SGBD, dont l’énoncé sera disponible ultérieurement, et 
+qui comptera pour 50% de la note de labo. 
+Attention, toutes les moyennes sont géométriques. 
+Comme vous savez calculer, vous aurez compris que ce projet compte donc pour 30% de la 
+note. Les points sont répartis de la manière suivante :  - 
+Conversion vers le document XML    - - - - 
+Réalisation du DTD et/ou du XSD    
+Parsing et calcul statistique     
+Site web avec XSLT      
+XQuery       
+5 points 
+4 points 
+6 points 
+5 points 
+5 points 
+Ce projet est à réaliser par binôme. Il sera à présenter pendant l’année pendant la séance de 
+laboratoire. Je vous recommande de le faire après le congé d’automne, et de ne pas attendre 
+la dernière semaine. Dans tous les cas, pour pouvoir présenter le projet, il faut l’avoir envoyé, 
+par mail à samuel.hiard@hepl.be au plus tard le vendredi précédent le jour du labo (avec 23h59 
+comme heure limite).  
+Il y a beaucoup à faire, donc ne trainez pas. 
+Pour certaines réalisations, il sera fait mention de « au minimum », « pour les pros » et « pour 
+les experts ». La signification est la suivante :  
+Au minimum : La base. Ce que j’attends vraiment au minimum du minimum. Arrêtez-vous là 
+si vous visez la réussite simple (ce que vous aurez, mais seulement si c’est bien réalisé). 
+Pour les pros : Une réalisation un peu plus pro ou demandant un peu plus d’implications et de 
+travail. Ne sera évalué que si l’item « au minimum » est réalisé. Pour ceux qui visent la 
+distinction. 
+Pour les experts : Pour ceux que le sujet passionne et qui veulent vraiment se spécialiser dans 
+cette discipline. Ou pour ceux qui visent l’excellence et la plus grande distinction. 
+Bon courage et, surtout, amusez-vous bien ☺

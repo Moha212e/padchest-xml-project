@@ -1,60 +1,81 @@
-# Phase 4 - Validation & Parsing Java ✅
+# 📘 Projet XML - PadChest
 
-## 🎯 Parser SAX Implémenté
+## Description du projet
+Ce projet consiste en l'analyse et le traitement de données médicales issues du dataset PadChest, avec conversion CSV vers XML et développement d'outils d'analyse.
 
-### Fonctionnalités
-- ✅ **Parser SAX** simple et efficace
-- ✅ **Comptage "loc right"** dans les localisations
-- ✅ **Top 10 labels** les plus fréquents
-- ✅ **Génération stats.txt** automatique
-- ✅ **Interface console** claire et informative
+## Structure du projet
 
-## 🚀 Utilisation
-
-### Windows
-```bash
-cd parser
-run_parser.bat
+```
+padchest-xml-project/
+├── data/                    # Données du projet
+│   ├── raw/                 # Fichier CSV brut
+│   └── processed/           # Fichier XML généré
+├── schema/                  # Définitions de structure
+│   ├── images.dtd          # Document Type Definition
+│   └── images.xsd          # XML Schema Definition
+├── parser/                  # Parser Java
+│   └── src/main/java/      # Code source Java
+├── xslt/                    # Transformations XSLT
+│   ├── view.xsl            # Feuille de style XSLT
+│   └── index.html          # Page HTML générée
+├── xquery/                  # Requêtes XQuery
+│   └── queries.xq          # Requêtes BaseX
+├── docs/                    # Documentation
+└── deliverables/            # Livrables finaux
 ```
 
-### Linux/Mac
-```bash
-cd parser
-chmod +x run_parser.sh
-./run_parser.sh
-```
+## Phases de réalisation
 
-### Manuel
-```bash
-# Compilation
-javac PadChestParser.java
+### Phase 1 - Mise en place & organisation ✅
+- [x] Structure du projet créée
+- [x] Dossiers organisés selon le plan
+- [x] README initial préparé
 
-# Exécution
-java PadChestParser ../data/processed/test_images.xml
-```
+### Phase 2 - Conversion CSV → XML
+- [ ] Identification des champs à conserver
+- [ ] Définition de la structure XML
+- [ ] Programme de conversion
+- [ ] Génération de images.xml
 
-## 📁 Fichiers créés
-- `PadChestParser.java` - Parser SAX principal
-- `run_parser.bat` - Script Windows
-- `run_parser.sh` - Script Linux/Mac
-- `stats.txt` - Résultats générés automatiquement
+### Phase 3 - Définition de la structure
+- [ ] Rédaction de images.dtd
+- [ ] Création de images.xsd (optionnel)
+- [ ] Validation du XML
 
-## 📊 Résultats attendus
-Le parser génère :
-1. **Statistiques console** en temps réel
-2. **Fichier stats.txt** avec :
-   - Nombre total d'images
-   - Nombre d'images avec "loc right"
-   - Top 10 des labels + fréquences
+### Phase 4 - Validation & Parsing Java
+- [ ] Implémentation du parser SAX/DOM
+- [ ] Calcul des statistiques
+- [ ] Génération de stats.txt
 
-## 🔧 Code simple et clair
-- **Variables explicites** pour le comptage
-- **Méthodes SAX basiques** (startElement, characters, endElement)
-- **Commentaires détaillés** pour comprendre chaque étape
-- **Gestion d'erreurs** simple mais efficace
+### Phase 5 - Transformation XSLT → HTML
+- [ ] Création de view.xsl
+- [ ] Génération d'index.html
+- [ ] Mise en forme CSS/JS
 
-## 📝 Notes techniques
-- **SAX Parser** : Minimum requis ✅
-- **Validation DTD** : Automatique si DOCTYPE présent
-- **Performance** : Optimisé pour de gros fichiers XML
-- **Mémoire** : Faible consommation (SAX streaming)
+### Phase 6 - BaseX & XQuery
+- [ ] Import dans BaseX
+- [ ] Requêtes XQuery
+- [ ] Intégration webservice (pro/expert)
+
+### Phase 7 - Intégration & Livraison
+- [ ] Rassemblement des livrables
+- [ ] Documentation finale
+- [ ] Vérification croisée
+
+## Barème
+- Conversion XML : 5 pts
+- DTD/XSD : 4 pts
+- Parser + stats : 6 pts
+- XSLT → HTML : 5 pts
+- XQuery : 5 pts
+- **Total : 25 pts**
+
+## Équipe
+- [Nom du membre 1] : [Rôles assignés]
+- [Nom du membre 2] : [Rôles assignés]
+
+## Instructions d'utilisation
+*À compléter selon l'avancement du projet*
+
+---
+*Projet réalisé dans le cadre du cours XML - [Année académique]*
