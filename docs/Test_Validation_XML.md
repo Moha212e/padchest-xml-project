@@ -317,4 +317,3 @@ xmllint --dtdvalid schema/images.dtd data/processed/test_images.xml
 ---
 
 *Guide créé pour le projet PadChest XML - HEPL 2024*
-
