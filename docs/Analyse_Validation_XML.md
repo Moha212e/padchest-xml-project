@@ -168,3 +168,4 @@ Maintenant que le DTD est validé, vous pouvez :
 4. **Passer aux phases suivantes** (Parser Java, XSLT, XQuery)
 
 Votre DTD est prêt et fonctionnel ! 🎯
+

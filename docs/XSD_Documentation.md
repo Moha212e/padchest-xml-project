@@ -312,3 +312,4 @@ Le XSD PadChest offre :
 ✅ **Contraintes de cohérence** pour la qualité des données  
 
 **Niveau** : Pro/Expert - Fonctionnalités avancées pour une validation robuste ! 🚀
+
